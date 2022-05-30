@@ -2,11 +2,11 @@
   <div class="main">
     <header>
       <img id="image" class="image"
-           src="https://scontent-frt3-2.xx.fbcdn.net/v/t1.15752-9/283440723_750168605999669_7578058218754862595_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=ae9488&_nc_ohc=wiOVghN0o4QAX9vNUOM&_n">
+           src="~/static/sum-circle.jpg">
     </header>
     <section class=" box">
       <h1>KOŁO ZATOCZYŁO SIĘ JUŻ <span style="color:#e74c3c;">{{ counter.value }}</span> RAZY</h1>
-      <button @click="spin">ZATOCZ</button>
+      <button @click="spin" :disabled="disabled">ZATOCZ</button>
     </section>
 
 
@@ -14,10 +14,12 @@
 </template>
 
 <script>
+import countapi from 'countapi-js';
+
 export default {
   name: 'IndexPage',
   async asyncData({$axios}) {
-    const counter = await $axios.$get('https://api.countapi.xyz/get/sum/spins');
+    const counter = await countapi.get("sum-edu.pl", "spins");
     return {counter}
   },
   head() {
@@ -27,12 +29,16 @@ export default {
   },
   data() {
     return {
-      rotation: 0
+      rotation: 0,
+      disabled: false
     }
   },
   methods: {
-    spin() {
+    async spin() {
       setTimeout(this.animate, 5);
+      this.disabled = true;
+      this.counter = await countapi.hit("sum-edu.pl", "spins");
+      setTimeout(() => this.disabled = false, 5000);
     },
     animate() {
       if (this.rotation >= 360) {
@@ -48,6 +54,10 @@ export default {
 </script>
 
 <style>
+body {
+  box-sizing: border-box;
+}
+
 .main {
   display: flex;
   align-items: center;
@@ -56,21 +66,24 @@ export default {
 }
 
 .image {
-  margin: 128px 0 64px 0;
+  margin: 9vh 0 9vh 0;
+  height: 50vh;
+  max-height: 90vw;
 }
 
 .box {
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
 }
 
 button {
-  padding: 10px;
-  font-size: 10em;
+  margin: 8vh 32px 32px;
+  font-size: 4em;
 }
 
 h1 {
-  font-size: 6rem;
+  font-size: min(4vw, 3vh);
 }
 </style>
