@@ -1,7 +1,5 @@
-export default {
-  async fetch(request, env) {
-    return await handleRequest(request, env);
-  }
+export const onRequest = async ({request, env}) => {
+  return await handleRequest(request, env);
 }
 
 async function handleRequest(request, env) {
