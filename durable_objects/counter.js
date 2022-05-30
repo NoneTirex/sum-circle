@@ -1,3 +1,5 @@
+ts#example---counter
+
 export class Counter {
   constructor(state) {
     this.state = state;
