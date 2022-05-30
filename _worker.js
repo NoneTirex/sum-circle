@@ -1,5 +1,7 @@
-export const onRequest = async ({request, env}) => {
-  return await handleRequest(request, env);
+export default {
+  async fetch(request, env) {
+    return await handleRequest(request, env);
+  }
 }
 
 async function handleRequest(request, env) {
@@ -13,7 +15,7 @@ async function handleRequest(request, env) {
 
 // Durable Object
 
-export class Counter {
+export class _worker {
   constructor(state, env) {
     this.state = state;
   }
@@ -32,7 +34,7 @@ export class Counter {
       case "/spin":
         ++value;
         break;
-      case "/":
+      case "/counter":
         // Just serve the current value.
         break;
       default:
